@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
 import Card from "./Card";
+import PageLink from "./Links";
 
 const Header = styled.div`
   display: flex;
@@ -16,16 +17,6 @@ const Title = styled.div`
   color: #443e3e;
   text-shadow: 1px 1px 5px #fff;
   font-size: 1.9rem;
-`;
-
-const PageLink = styled.div`
-  font-size: 1.2rem;
-  color: midnightblue;
-  background-color: rgba(150,150,150,0.6);
-  text-decoration: none;
-  border: 1px dotted gray;
-  display: flex;
-  align-items: center;
 `;
 
 const App = () => {
@@ -42,6 +33,7 @@ const App = () => {
       axios
         .get(`https://swapi.co/api/people/?page=${page}`)
         .then(response => {
+          console.log(`Requested https://swapi.co/api/people/?page=${page}`)
           console.log("Received.");
           updateIncoming(response.data);
         })
@@ -52,14 +44,20 @@ const App = () => {
     fetchData();
   }, [page]);
 
+  function updater(val){
+    if (page + val > 0){
+      changePage(page + val);
+    }
+  }
+
   console.log("Incoming: ", incoming);
 
   return (
     <div className="App">
       <Header>
-        <PageLink>Previous 10</PageLink>
+      {page > 1 ? <PageLink updater={updater} val={-1} /> : <span></span>}
         <Title>React Wars</Title>
-        <PageLink>Next 10</PageLink>
+        <PageLink updater={updater} val={1} />
       </Header>
       {incoming.results.map((person, index) => {
         return (
