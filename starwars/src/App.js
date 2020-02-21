@@ -33,8 +33,6 @@ const App = () => {
       axios
         .get(`https://swapi.co/api/people/?page=${page}`)
         .then(response => {
-          console.log(`Requested https://swapi.co/api/people/?page=${page}`)
-          console.log("Received.");
           updateIncoming(response.data);
         })
         .catch(error => {
@@ -49,8 +47,6 @@ const App = () => {
       changePage(page + val);
     }
   }
-
-  console.log("Incoming: ", incoming);
 
   return (
     <div className="App">
